@@ -26,8 +26,13 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Enable CORS for all routes and allow Authorization headers and HTTP methods
-CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-
+CORS(
+    app,
+    resources={r"/api/*": {"origins": "*"}},
+    supports_credentials=True,
+    allow_headers=["Content-Type", "Authorization"],
+    methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+)
 db.init_app(app)
 bcrypt.init_app(app)
 
