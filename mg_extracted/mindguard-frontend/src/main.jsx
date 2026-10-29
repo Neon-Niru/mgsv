@@ -10,7 +10,7 @@ function RedirectHandler({ children }) {
     const redirect = sessionStorage.getItem('redirect')
     if (redirect) {
       sessionStorage.removeItem('redirect')
-      navigate(redirect.replace('/mindguard', '') || '/', { replace: true })
+      navigate(redirect.replace('/mgsv', '') || '/', { replace: true })
     }
   }, [navigate])
   return children
@@ -18,7 +18,7 @@ function RedirectHandler({ children }) {
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/mindguard">
+    <BrowserRouter basename="/mgsv">
       <RedirectHandler>
         <App />
       </RedirectHandler>
