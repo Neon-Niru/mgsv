@@ -25,7 +25,8 @@ from routes.assessment import assessment_bp
 app = Flask(__name__)
 app.config.from_object(Config)
 
-CORS(app)
+# Enable CORS for all routes and allow Authorization headers and HTTP methods
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 db.init_app(app)
 bcrypt.init_app(app)
@@ -40,14 +41,12 @@ app.register_blueprint(interview_bp, url_prefix="/api")
 app.register_blueprint(chat_bp, url_prefix="/api")
 app.register_blueprint(assessment_bp, url_prefix="/api")
 
-
 @app.route("/")
 def home():
     return {
         "status": "running",
         "project": "MindGuard AI"
     }
-
 
 with app.app_context():
     db.create_all()
