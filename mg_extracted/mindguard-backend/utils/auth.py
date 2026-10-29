@@ -23,6 +23,10 @@ def decode_token(token):
 def jwt_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
+        # 1. ALWAYS bypass auth check for CORS preflight OPTIONS requests
+        if request.method == "OPTIONS":
+            return "", 200
+
         token = None
         auth_header = request.headers.get("Authorization")
         if auth_header and auth_header.startswith("Bearer "):
