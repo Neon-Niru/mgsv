@@ -7,9 +7,13 @@ chat_bp = Blueprint("chat", __name__)
 MAX_HISTORY = 20
 
 
-@chat_bp.route("/chat", methods=["POST"])
+@chat_bp.route("/chat", methods=["POST", "OPTIONS"])
 @jwt_required
 def chat():
+    # Handle CORS preflight request
+    if request.method == "OPTIONS":
+        return "", 200
+
     data = request.get_json(silent=True) or {}
     message = str(data.get("message", "")).strip()
     history = data.get("history") or []
