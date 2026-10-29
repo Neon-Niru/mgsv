@@ -3,14 +3,12 @@ from ai_engine.general_chat import generate_general_reply
 from utils.auth import jwt_required
 
 chat_bp = Blueprint("chat", __name__)
-
 MAX_HISTORY = 20
 
 
 @chat_bp.route("/chat", methods=["POST", "OPTIONS"])
 @jwt_required
 def chat():
-    # Handle CORS preflight
     if request.method == "OPTIONS":
         return "", 200
 
@@ -24,7 +22,6 @@ def chat():
     if not isinstance(history, list):
         history = []
 
-    # Keep the normal chat completely separate from the wellness interview.
     safe_history = []
     for item in history[-MAX_HISTORY:]:
         if not isinstance(item, dict):
