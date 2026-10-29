@@ -8,17 +8,12 @@ MAX_HISTORY = 20
 
 
 @chat_bp.route("/chat", methods=["POST", "OPTIONS"])
+@jwt_required
 def chat():
-    # 1. Immediately handle CORS preflight WITHOUT auth check
+    # Handle CORS preflight
     if request.method == "OPTIONS":
         return "", 200
 
-    # 2. Apply JWT auth manually or wrap the POST logic
-    return handle_authenticated_chat()
-
-
-@jwt_required
-def handle_authenticated_chat():
     data = request.get_json(silent=True) or {}
     message = str(data.get("message", "")).strip()
     history = data.get("history") or []
@@ -29,6 +24,7 @@ def handle_authenticated_chat():
     if not isinstance(history, list):
         history = []
 
+    # Keep the normal chat completely separate from the wellness interview.
     safe_history = []
     for item in history[-MAX_HISTORY:]:
         if not isinstance(item, dict):
