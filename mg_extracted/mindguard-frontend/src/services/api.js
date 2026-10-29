@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_URL || "https://mgsv.onrender.com/api";
+const BASE = "https://mgsv.onrender.com/api";
 
 async function request(endpoint, options = {}) {
   const token = localStorage.getItem("token");
