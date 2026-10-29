@@ -16,22 +16,25 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mg_extracted/mindguard-frontend
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js (if using Vite/React/npm)
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: mg_extracted/mindguard-frontend/package-lock.json
 
-      - name: Install dependencies & Build
-        run: |
-          # Uncomment if you have a package.json in your frontend folder:
-          # npm install
-          # npm run build
-          echo "Build step completed"
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -39,8 +42,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Point this to your built frontend folder (e.g., 'dist' or '.' if pure HTML/CSS)
-          path: '.'
+          # Point to your built folder. (Usually 'dist' for Vite or 'build' for React)
+          path: 'mg_extracted/mindguard-frontend/dist'
 
   deploy:
     environment:
